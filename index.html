@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Noughts and Crosses</title>
+    <link rel='stylesheet' href='css/application.css' />
+    <script src='js/angular.min.js'></script>
+    <script src='js/underscore-min.js'></script>
+    <script src='js/app.js'></script>
+    <script src='js/game.js'></script>
+    <script src='js/board.js'></script>
+    <script src='js/bot.js'></script>
+  </head>
+  
+  <body>
+    <div id="noughts" ng-app="noughts">
+      <div ng-controller="GameCtrl">
+        <div id="board">
+          <div ng-repeat="cell in board.cells">
+            <div ng-click="mark($index, board.HUMAN)" class="mark square">{{cell}}</div>
+          </div>
+        </div>
+
+      <h1 ng-show="board.winner">{{board.winner}} wins!</h1>
+      <h1 ng-show="board.draw">Draw!</h1>
+      </div>
+    </div>
+  </body>
+</html>
