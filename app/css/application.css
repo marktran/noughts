@@ -1,0 +1,25 @@
+#board {
+  width: 540px;
+  height: 540px;
+
+  border: 1px solid #000;
+}
+
+.square {
+  width: 178px;
+  height: 178px;
+
+  float: left;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.square:hover {
+  background-color: #ffff88;
+}
+
+.mark {
+  font-size: 150px;
+  text-align: center;
+  line-height: 178px;
+}
