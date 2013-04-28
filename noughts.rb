@@ -6,7 +6,11 @@ class Noughts < Sinatra::Base
 
   assets do
     css :application, ['/css/application.css']
-    js  :app, ['/js/vendor/*.js', '/js/*.js']
+    js  :application, [
+      '/js/vendor/jquery.*.js',
+      '/js/vendor/*.js',
+      '/js/*.js'
+    ]
   end
 
   get '/' do
