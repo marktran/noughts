@@ -10,21 +10,7 @@
     }
 
     Bot.prototype.nextMove = function() {
-      var bestMove, bestScore, i, score, _i, _len, _ref;
-      bestScore = -Infinity;
-      bestMove = 0;
-      _ref = this.board.getOpenPositions();
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        i = _ref[_i];
-        this.board.mark(i, this.board.BOT);
-        score = -this.negamax(this.board.HUMAN);
-        this.board.undo(i);
-        if (score > bestScore) {
-          bestScore = score;
-          bestMove = i;
-        }
-      }
-      return bestMove;
+      return this.findMove(this.board.BOT);
     };
 
     Bot.prototype.checkGameState = function(player) {
@@ -39,20 +25,51 @@
       return -1;
     };
 
-    Bot.prototype.negamax = function(player) {
+    Bot.prototype.findMove = function(player) {
+      var bestMove, bestScore, i, score, _i, _len, _ref, _ref1;
+      _ref = [-Infinity, null], bestScore = _ref[0], bestMove = _ref[1];
+      _ref1 = this.board.getOpenPositions();
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        i = _ref1[_i];
+        this.board.mark(i, player);
+        score = -this.negamax(-player);
+        this.board.undo(i);
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = i;
+        }
+      }
+      return bestMove;
+    };
+
+    Bot.prototype.negamax = function(player, depth, alpha, beta) {
       var i, score, _i, _len, _ref;
-      score = -Infinity;
-      if (this.board.isGameOver()) {
+      if (depth == null) {
+        depth = 6;
+      }
+      if (alpha == null) {
+        alpha = -Infinity;
+      }
+      if (beta == null) {
+        beta = Infinity;
+      }
+      if (this.board.isGameOver() || depth === 0) {
         return this.checkGameState(player);
       }
       _ref = this.board.getOpenPositions();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         i = _ref[_i];
         this.board.mark(i, player);
-        score = _.max([score, -this.negamax(-player)]);
+        score = _.max([score, -this.negamax(-player, depth - 1, -beta, -alpha)]);
         this.board.undo(i);
+        if (score >= beta) {
+          return score;
+        }
+        if (score > alpha) {
+          alpha = score;
+        }
       }
-      return score;
+      return alpha;
     };
 
     return Bot;
